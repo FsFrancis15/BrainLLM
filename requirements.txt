@@ -1,0 +1,11 @@
+g2p_en==2.1.0
+numpy==1.25.0
+peft==0.6.2
+pytorch_metric_learning==2.4.1
+PyYAML==6.0.2
+scipy==1.15.2
+tfrecord==1.14.4
+torch==2.1.0+cu118
+torchmetrics==1.2.0
+tqdm==4.66.1
+transformers==4.35.0
