@@ -1,0 +1,109 @@
+task_name: Brain_to_text_two_stage
+
+encoder_checkpoint: /GPFS/data/shengfeng-1/BrainLlama/checkpoints_pretrain
+
+data_config:
+  data_path: /GPFS/data/shengfeng-1/MultiModal/tfRecords/tfRecords_bpe_100
+  sigma: 2
+  white_noise_sd: 0.8
+  constant_offset_sd: 0.2
+  mask_bandwidth: 40
+
+model_config:
+
+  encoder_config:
+
+    name: BGRU_P
+
+    dim_feature: 256
+    num_layers: 5
+    hidden_size: 1024
+    stride: 4
+    dropout_gru: 0.4
+    dropout_inp: 0
+    kernel_size: 32
+    bidirectional: True
+
+    #use_random_mask: True
+    #mask_bandwidth: 40
+
+  decoder_config:
+
+    name: llama2-7b
+
+finetune_config:
+  is_monitoring: True
+
+  num_epochs: 200
+
+  early_stopping: False
+  patience: 10
+
+  save_checkpoint: True
+  checkpoint_path: /GPFS/data/shengfeng-1/BrainLlama/checkpoints_llama2_7b
+
+  lr_encoder: -1
+  lr_linear: 0.001
+  lr_decoder: 0.00001
+  eps: 0.1
+  batch_size: 8
+  warmup_steps: 400
+
+  continue: False
+
+#  use_adapter: True
+#  adapter_config:
+#    adapter_len: 10
+#    adapter_layers: 10
+
+  use_lora: True
+  lora_config:
+    lora_rank: 8
+    lora_alpha: 32
+    lora_dropout: 0.1
+
+
+train_config:
+  is_monitoring: True
+
+  num_epochs: 200
+
+  early_stopping: True
+  patience: 40
+
+  save_checkpoint: True
+  checkpoint_path: /GPFS/data/shengfeng-1/BrainLlama/checkpoints_llama2_7b
+
+  lr_encoder: 0.001
+  lr_linear: 0.001
+  eps: 0.1
+  batch_size: 8
+  warmup_steps: 400
+
+  continue: False
+
+pretrain_config:
+  is_monitoring: True
+
+  num_epochs: 400
+
+  early_stopping: False
+  patience: 40
+
+  save_checkpoint: True
+  checkpoint_path: /GPFS/data/shengfeng-1/BrainLlama/checkpoints_pretrain
+
+  lr_encoder: 0.02
+  eps: 0.1
+  batch_size: 64
+  warmup_steps: 400
+  l2_coef : 0.00001
+  clip_norm : 10
+
+
+
+
+
+    
+
+
